@@ -28,29 +28,13 @@ const schedule = {
   },
 };
 
+import Banner from "./components/Banner";
+import CourseList from "./components/CourseList";
+
 const App = () => (
   <div>
-    <h1>{schedule.title}</h1>
-    <table>
-      <thead>
-        <tr>
-          <th>Term</th>
-          <th>Number</th>
-          <th>Meets</th>
-          <th>Title</th>
-        </tr>
-      </thead>
-      <tbody>
-        {Object.entries(schedule.courses).map(([id, course]) => (
-          <tr key={id}>
-            <td>{course.term}</td>
-            <td>{course.number}</td>
-            <td>{course.meets}</td>
-            <td>{course.title}</td>
-          </tr>
-        ))}
-      </tbody>
-    </table>
+    <Banner title={schedule.title} />
+    <CourseList courses={schedule.courses} />
   </div>
 );
 
