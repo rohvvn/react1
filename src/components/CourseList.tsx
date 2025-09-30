@@ -18,26 +18,20 @@ const CourseList = ({courses}: CourseListProps) => {
     }
 
     return (
-    <table>
-      <thead>
-        <tr>
-          <th>Term</th>
-          <th>Number</th>
-          <th>Meets</th>
-          <th>Title</th>
-        </tr>
-      </thead>
-      <tbody>
+    <div className="schedule-container">
+      <div className="schedule-grid">
         {entries.map(([id, course]) => (
-          <tr key={id}>
-            <td>{course.term}</td>
-            <td>{course.number}</td>
-            <td>{course.meets}</td>
-            <td>{course.title}</td>
-          </tr>
+          <article key={id} className="class-card" aria-label={`${course.term} CS ${course.number} ${course.title}`}>
+            <div className="card-top">
+              <h3 className="card-title">{course.term} CS {course.number}</h3>
+              <p className="card-subtitle">{course.title}</p>
+            </div>
+            <hr className="card-divider" />
+            <div className="card-time">{course.meets}</div>
+          </article>
         ))}
-      </tbody>
-    </table>
+      </div>
+    </div>
   );
 };
 
