@@ -1,6 +1,6 @@
 @import "tailwindcss";
 
-/* Layout for the grid of cards */
+
 .schedule-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
@@ -8,7 +8,7 @@
   align-items: stretch;
 }
 
-/* Card container */
+
 .class-card {
   display: flex;
   flex-direction: column;
@@ -27,7 +27,7 @@
 
 .schedule-container { padding: 1rem; }
 
-/* Hover affordance similar to material-like elevation */
+
 .class-card:hover { box-shadow: 0 2px 6px rgba(0,0,0,0.08), 0 10px 24px rgba(0,0,0,0.08); }
 
 @media (prefers-color-scheme: dark) {
