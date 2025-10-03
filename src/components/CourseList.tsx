@@ -9,18 +9,25 @@ type Courses = Record<string, Course>;
 
 interface CourseListProps {
     courses: Courses;
+    quarterSelection: string;
 }
 
-const CourseList = ({courses}: CourseListProps) => {
+const CourseList = ({courses, quarterSelection}: CourseListProps) => {
     const entries = Object.entries(courses ?? {});
-    if (entries.length === 0) {
-        return <p>No courses available.</p>;
+    
+    // 
+    const filteredEntries = entries.filter(([, course]) => 
+        course.term.toLowerCase() === quarterSelection.toLowerCase()
+    );
+    
+    if (filteredEntries.length === 0) {
+        return <p>No courses available for {quarterSelection} quarter.</p>;
     }
 
     return (
     <div className="schedule-container">
       <div className="schedule-grid">
-        {entries.map(([id, course]) => (
+        {filteredEntries.map(([id, course]) => (
           <article key={id} className="class-card" aria-label={`${course.term} CS ${course.number} ${course.title}`}>
             <div className="card-top">
               <h3 className="card-title">{course.term} CS {course.number}</h3>
