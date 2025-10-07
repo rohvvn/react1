@@ -17,6 +17,7 @@
   background: #ffffff;
   box-shadow: 0 1px 2px rgba(0,0,0,0.06), 0 6px 18px rgba(0,0,0,0.06);
   padding: 1.25rem;
+  transition: background-color .2s ease, border-color .2s ease, box-shadow .2s ease;
 }
 
 .card-top { display: flex; flex-direction: column; gap: 0.75rem; }
@@ -30,12 +31,19 @@
 
 .class-card:hover { box-shadow: 0 2px 6px rgba(0,0,0,0.08), 0 10px 24px rgba(0,0,0,0.08); }
 
+.class-card.selected {
+  background: #ecfdf5; /* emerald-50 */
+  border-color: #10b981; /* emerald-500 */
+  box-shadow: 0 2px 8px rgba(16,185,129,0.15), 0 12px 28px rgba(16,185,129,0.15);
+}
+
 @media (prefers-color-scheme: dark) {
   .class-card { background: #111827; border-color: rgba(255,255,255,0.12); box-shadow: 0 1px 2px rgba(0,0,0,0.6), 0 10px 24px rgba(0,0,0,0.4); }
   .card-title { color: #e5e7eb; }
   .card-subtitle { color: #cbd5e1; }
   .card-divider { border-top-color: #374151; }
   .card-time { color: #f3f4f6; }
+  .class-card.selected { background: #064e3b; border-color: #10b981; box-shadow: 0 2px 8px rgba(16,185,129,0.35), 0 12px 28px rgba(16,185,129,0.35); }
 }
 
 
