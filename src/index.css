@@ -46,4 +46,221 @@
   .class-card.selected { background: #064e3b; border-color: #10b981; box-shadow: 0 2px 8px rgba(16,185,129,0.35), 0 12px 28px rgba(16,185,129,0.35); }
 }
 
+/* Header and Controls Layout */
+.header-section {
+  margin-bottom: 1.5rem;
+}
+
+.controls-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 0.5rem;
+}
+
+.course-plan-btn {
+  background: #3b82f6;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  padding: 0.75rem 1.5rem;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.2s ease, transform 0.1s ease;
+}
+
+.course-plan-btn:hover {
+  background: #2563eb;
+  transform: translateY(-1px);
+}
+
+.course-plan-btn:active {
+  transform: translateY(0);
+}
+
+/* Modal Styles */
+.modal-backdrop {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  padding: 1rem;
+}
+
+.modal-content {
+  background: white;
+  border-radius: 16px;
+  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+  max-width: 500px;
+  width: 100%;
+  max-height: 80vh;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+.modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1.5rem;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.modal-title {
+  margin: 0;
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #111827;
+}
+
+.modal-close-btn {
+  background: none;
+  border: none;
+  font-size: 1.5rem;
+  cursor: pointer;
+  color: #6b7280;
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 6px;
+  transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+.modal-close-btn:hover {
+  background: #f3f4f6;
+  color: #374151;
+}
+
+.modal-body {
+  padding: 1.5rem;
+  overflow-y: auto;
+  flex: 1;
+}
+
+.empty-state {
+  text-align: center;
+  padding: 2rem 1rem;
+}
+
+.empty-message {
+  font-size: 1.125rem;
+  font-weight: 600;
+  color: #6b7280;
+  margin: 0 0 0.5rem 0;
+}
+
+.empty-instructions {
+  color: #9ca3af;
+  margin: 0;
+  line-height: 1.6;
+}
+
+.course-list-title {
+  margin: 0 0 1rem 0;
+  font-size: 1.125rem;
+  font-weight: 600;
+  color: #374151;
+}
+
+.selected-courses {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.selected-course-item {
+  border: 1px solid #e5e7eb;
+  border-radius: 8px;
+  margin-bottom: 0.75rem;
+  padding: 1rem;
+  background: #f9fafb;
+}
+
+.course-info {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.course-number {
+  font-weight: 700;
+  color: #111827;
+  font-size: 1rem;
+}
+
+.course-title {
+  color: #374151;
+  font-size: 0.875rem;
+}
+
+.course-time {
+  color: #6b7280;
+  font-size: 0.875rem;
+  font-weight: 500;
+}
+
+/* Dark mode styles for modal */
+@media (prefers-color-scheme: dark) {
+  .modal-content {
+    background: #1f2937;
+    box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.5), 0 10px 10px -5px rgba(0, 0, 0, 0.3);
+  }
+  
+  .modal-header {
+    border-bottom-color: #374151;
+  }
+  
+  .modal-title {
+    color: #f9fafb;
+  }
+  
+  .modal-close-btn {
+    color: #9ca3af;
+  }
+  
+  .modal-close-btn:hover {
+    background: #374151;
+    color: #d1d5db;
+  }
+  
+  .empty-message {
+    color: #9ca3af;
+  }
+  
+  .empty-instructions {
+    color: #6b7280;
+  }
+  
+  .course-list-title {
+    color: #d1d5db;
+  }
+  
+  .selected-course-item {
+    background: #374151;
+    border-color: #4b5563;
+  }
+  
+  .course-number {
+    color: #f9fafb;
+  }
+  
+  .course-title {
+    color: #d1d5db;
+  }
+  
+  .course-time {
+    color: #9ca3af;
+  }
+}
+
 

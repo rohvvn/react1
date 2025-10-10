@@ -1,5 +1,6 @@
 import { useState, useMemo } from 'react';
 import CourseList, { type Courses } from './CourseList';
+import ScheduleModal from './ScheduleModal';
 
 const quarters = ['Fall', 'Winter', 'Spring'] as const;
 
@@ -32,6 +33,7 @@ const toggleList = <T,>(x: T, lst: T[]): T[] => (
 const MenuSelector = ({ courses }: MenuSelectorProps) => {
   const [quarterSelection, setQuarterSelection] = useState<string>('Fall');
   const [selectedIds, setSelectedIds] = useState<string[]>([]);
+  const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
 
   const onToggle = (id: string) => setSelectedIds(prev => toggleList(id, prev));
 
@@ -39,10 +41,23 @@ const MenuSelector = ({ courses }: MenuSelectorProps) => {
     .map(id => ({ id, course: courses[id] }))
     .filter(({ course }) => !!course), [selectedIds, courses]);
 
+  const handleOpenModal = () => setIsModalOpen(true);
+  const handleCloseModal = () => setIsModalOpen(false);
+
   return (
     <div className="container">
-      <h2 className="mb-2">Select Courses</h2>
-      <QuarterSelector selection={quarterSelection} setSelection={setQuarterSelection} />
+      <div className="header-section">
+        <h2 className="mb-2">Select Courses</h2>
+        <div className="controls-row">
+          <QuarterSelector selection={quarterSelection} setSelection={setQuarterSelection} />
+          <button 
+            className="course-plan-btn"
+            onClick={handleOpenModal}
+          >
+            Course Plan
+          </button>
+        </div>
+      </div>
 
       <div className="my-3">
         <h3 className="mb-1">Selected</h3>
@@ -64,6 +79,12 @@ const MenuSelector = ({ courses }: MenuSelectorProps) => {
         quarterSelection={quarterSelection}
         selectedIds={selectedIds}
         onToggle={onToggle}
+      />
+      
+      <ScheduleModal
+        isOpen={isModalOpen}
+        onClose={handleCloseModal}
+        selectedCourses={selectedList}
       />
     </div>
   );
