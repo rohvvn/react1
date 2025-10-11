@@ -1,6 +1,8 @@
 import { useState, useMemo } from 'react';
 import CourseList, { type Courses } from './CourseList';
 import ScheduleModal from './ScheduleModal';
+// @ts-ignore - JavaScript utility file
+import { conflictsWithSelected } from '../utilities/timeConflicts';
 
 const quarters = ['Fall', 'Winter', 'Spring'] as const;
 
@@ -26,16 +28,30 @@ interface MenuSelectorProps {
   courses: Courses;
 }
 
-const toggleList = <T,>(x: T, lst: T[]): T[] => (
-  lst.includes(x) ? lst.filter(y => y !== x) : [...lst, x]
-);
 
 const MenuSelector = ({ courses }: MenuSelectorProps) => {
   const [quarterSelection, setQuarterSelection] = useState<string>('Fall');
   const [selectedIds, setSelectedIds] = useState<string[]>([]);
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
 
-  const onToggle = (id: string) => setSelectedIds(prev => toggleList(id, prev));
+  const onToggle = (id: string) => {
+    const course = courses[id];
+    
+    if (selectedIds.includes(id)) {
+      // Always allow unselecting
+      setSelectedIds(prev => prev.filter(selectedId => selectedId !== id));
+    } else {
+      // Check for conflicts before selecting
+      const selectedCourses = selectedIds
+        .map(id => courses[id])
+        .filter(course => !!course);
+      
+      if (!conflictsWithSelected(course, selectedCourses)) {
+        setSelectedIds(prev => [...prev, id]);
+      }
+      // If there's a conflict, do nothing (don't select)
+    }
+  };
 
   const selectedList = useMemo(() => selectedIds
     .map(id => ({ id, course: courses[id] }))

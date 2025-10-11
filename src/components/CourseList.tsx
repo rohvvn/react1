@@ -1,3 +1,6 @@
+// @ts-ignore - JavaScript utility file
+import { conflictsWithSelected } from '../utilities/timeConflicts';
+
 export interface Course {
     term: string;
     number: string;
@@ -17,10 +20,19 @@ interface CourseListProps {
 const CourseList = ({courses, quarterSelection, selectedIds, onToggle}: CourseListProps) => {
     const entries = Object.entries(courses ?? {});
     
-    // 
-    const filteredEntries = entries.filter(([, course]) => 
-        course.term.toLowerCase() === quarterSelection.toLowerCase()
-    );
+    // Filter courses by quarter and add conflict detection
+    const filteredEntries = entries
+        .filter(([, course]) => course.term.toLowerCase() === quarterSelection.toLowerCase())
+        .map(([id, course]) => {
+            const isSelected = selectedIds.includes(id);
+            const selectedCourses = selectedIds
+                .map(selectedId => courses[selectedId])
+                .filter(c => !!c && c !== course);
+            const hasConflict = conflictsWithSelected(course, selectedCourses);
+            const isUnselectable = !isSelected && hasConflict;
+            
+            return { id, course, isSelected, isUnselectable };
+        });
     
     if (filteredEntries.length === 0) {
         return <p>No courses available for {quarterSelection} quarter.</p>;
@@ -29,19 +41,29 @@ const CourseList = ({courses, quarterSelection, selectedIds, onToggle}: CourseLi
     return (
     <div className="schedule-container">
       <div className="schedule-grid">
-        {filteredEntries.map(([id, course]) => {
-          const isSelected = selectedIds.includes(id);
-          return (
+        {filteredEntries.map(({ id, course, isSelected, isUnselectable }) => (
             <article
               key={id}
-              className={`class-card${isSelected ? ' selected' : ''}`}
+              className={`class-card${isSelected ? ' selected' : ''}${isUnselectable ? ' conflicted' : ''}`}
               aria-label={`${course.term} CS ${course.number} ${course.title}`}
               aria-pressed={isSelected}
               role="button"
               tabIndex={0}
-              onClick={() => onToggle(id)}
-              onKeyDown={(e) => { if (e.key === ' ' || e.key === 'Enter') { e.preventDefault(); onToggle(id); } }}
+              onClick={() => !isUnselectable && onToggle(id)}
+              onKeyDown={(e) => { 
+                if ((e.key === ' ' || e.key === 'Enter') && !isUnselectable) { 
+                    e.preventDefault(); 
+                    onToggle(id); 
+                } 
+              }}
             >
+              {/* Add conflict indicator */}
+              {isUnselectable && (
+                <div className="conflict-indicator" aria-label="Time conflict">
+                  ×
+                </div>
+              )}
+              
               <div className="card-top">
                 <h3 className="card-title">{course.term} CS {course.number}</h3>
                 <p className="card-subtitle">{course.title}</p>
@@ -50,8 +72,7 @@ const CourseList = ({courses, quarterSelection, selectedIds, onToggle}: CourseLi
               <div className="card-time">{course.meets}</div>
               {isSelected && <div className="card-selected-indicator" aria-hidden>✓ Selected</div>}
             </article>
-          );
-        })}
+          ))}
       </div>
     </div>
   );
