@@ -1,5 +1,6 @@
 // @ts-ignore - JavaScript utility file
 import { conflictsWithSelected } from '../utilities/timeConflicts';
+import { Link } from '@tanstack/react-router';
 
 export interface Course {
     term: string;
@@ -65,8 +66,13 @@ const CourseList = ({courses, quarterSelection, selectedIds, onToggle}: CourseLi
               )}
               
               <div className="card-top">
-                <h3 className="card-title">{course.term} CS {course.number}</h3>
-                <p className="card-subtitle">{course.title}</p>
+                <div>
+                  <h3 className="card-title">{course.term} CS {course.number}</h3>
+                  <p className="card-subtitle">{course.title}</p>
+                </div>
+                <Link to="/edit/$courseId" params={{ courseId: id }} className="edit-btn" aria-label={`Edit ${course.title}`}>
+                  Edit
+                </Link>
               </div>
               <hr className="card-divider" />
               <div className="card-time">{course.meets}</div>

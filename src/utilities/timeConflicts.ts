@@ -1,5 +1,7 @@
+import { type Course } from '../components/CourseList';
+
 // Parse meeting string like "MWF 9:00-9:50" into days and time range
-export function parseMeetingTime(meeting) {
+export function parseMeetingTime(meeting: string) {
     if (!meeting || meeting.trim() === '') {
         return null;
     }
@@ -18,18 +20,18 @@ export function parseMeetingTime(meeting) {
 }
   
 // Check if two sets of days have any overlap
-export function hasDayOverlap(days1, days2) {
+export function hasDayOverlap(days1: string[], days2: string[]) {
     return days1.some(day => days2.includes(day));
 }
   
 // Convert time string "9:00" to minutes since midnight for comparison
-export function timeToMinutes(time) {
+export function timeToMinutes(time: string) {
     const [hours, minutes] = time.split(':').map(Number);
     return hours * 60 + minutes;
 }
   
 // Check if two time ranges overlap
-export function hasTimeOverlap(start1, end1, start2, end2) {
+export function hasTimeOverlap(start1: string, end1: string, start2: string, end2: string) {
     const start1Minutes = timeToMinutes(start1);
     const end1Minutes = timeToMinutes(end1);
     const start2Minutes = timeToMinutes(start2);
@@ -38,7 +40,7 @@ export function hasTimeOverlap(start1, end1, start2, end2) {
 }
   
 // Main function: check if two courses have a time conflict
-export function hasTimeConflict(course1, course2) {
+export function hasTimeConflict(course1: Course, course2: Course) {
     // Same term check
     if (course1.term.toLowerCase() !== course2.term.toLowerCase()) {
         return false;
@@ -60,6 +62,6 @@ export function hasTimeConflict(course1, course2) {
 }
   
 // Check if a course conflicts with any in a list of selected courses
-export function conflictsWithSelected(course, selectedCourses) {
+export function conflictsWithSelected(course: Course, selectedCourses: Course[]) {
     return selectedCourses.some(selectedCourse => hasTimeConflict(course, selectedCourse));
 }

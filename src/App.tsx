@@ -1,6 +1,6 @@
 import { useJsonQuery } from './utilities/fetch';
 import Banner from "./components/Banner";
-import MenuSelector from "./components/MenuSelector";
+import MenuPage from "./components/MenuPage";
 
 type Schedule = {
   title: string;
@@ -27,7 +27,7 @@ const App = () => {
   return (
     <div>
       <Banner title={schedule.title} />
-      <MenuSelector courses={schedule.courses} />
+      <MenuPage />
     </div>
   );
 };

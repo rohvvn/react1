@@ -1,10 +1,9 @@
 import { useState, useMemo } from 'react';
 import CourseList, { type Courses } from './CourseList';
 import ScheduleModal from './ScheduleModal';
-// @ts-ignore - JavaScript utility file
 import { conflictsWithSelected } from '../utilities/timeConflicts';
 
-const quarters = ['Fall', 'Winter', 'Spring'] as const;
+export const quarters = ['Fall', 'Winter', 'Spring'] as const;
 
 const QuarterButton = ({quarter, selection, setSelection}: {quarter: string, selection: string, setSelection: (quarter: string) => void}) => (
   <div>
@@ -16,7 +15,7 @@ const QuarterButton = ({quarter, selection, setSelection}: {quarter: string, sel
   </div>
 );
 
-const QuarterSelector = ({selection, setSelection}: {selection: string, setSelection: (quarter: string) => void}) => (
+export const QuarterSelector = ({selection, setSelection}: {selection: string, setSelection: (quarter: string) => void}) => (
   <div className="btn-group">
     { quarters.map(quarter => (
         <QuarterButton key={quarter} quarter={quarter} selection={selection} setSelection={setSelection} />

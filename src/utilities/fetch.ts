@@ -1,9 +1,9 @@
 import { useEffect, useState } from 'react';
 
-type JsonQueryResult = [unknown, boolean, Error | null];
+type JsonQueryResult<T> = [T | undefined, boolean, Error | null];
 
-export function useJsonQuery(url: string): JsonQueryResult {
-  const [data, setData] = useState<unknown>();
+export function useJsonQuery<T>(url: string): JsonQueryResult<T> {
+  const [data, setData] = useState<T>();
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<Error | null>(null);
 
