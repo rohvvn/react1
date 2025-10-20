@@ -3,6 +3,7 @@ import { useJsonQuery } from '../utilities/fetch'
 import Banner from '../components/Banner'
 import MenuPage from '../components/MenuPage'
 import { type Course } from '../components/CourseList'
+import useDbData from '../utilities/firebase'; // Corrected import
 
 type Schedule = {
   title: string;
@@ -10,13 +11,10 @@ type Schedule = {
 }
 
 function Index() {
-  const [schedule, isLoading, error] = useJsonQuery<Schedule>(
-    'https://courses.cs.northwestern.edu/394/guides/data/cs-courses.php'
-  );
+  const [schedule, error] = useDbData<Schedule>('/');
 
-  if (isLoading) return <div>Loading...</div>;
   if (error) return <div>Error: {error.message}</div>;
-  if (!schedule) return <div>No data found.</div>;
+  if (!schedule) return <div>Loading...</div>;
 
   return (
     <>
