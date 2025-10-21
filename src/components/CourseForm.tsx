@@ -11,10 +11,11 @@ interface FormCourse {
 
 interface CourseFormProps {
   course: FormCourse;
+  onSubmit: (course: FormCourse) => void; // 1. Update props interface
   onCancel: () => void;
 }
 
-const CourseForm = ({ course, onCancel }: CourseFormProps) => {
+const CourseForm = ({ course, onSubmit, onCancel }: CourseFormProps) => { // 2. Destructure onSubmit
   const [title, setTitle] = useState(course.title);
   const [meets, setMeets] = useState(course.meets);
   const [term, setTerm] = useState(course.term);
@@ -52,9 +53,14 @@ const CourseForm = ({ course, onCancel }: CourseFormProps) => {
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     if (validate()) {
-      // This is where you would handle form submission,
-      // for example, by calling an update function passed via props.
-      console.log('Form data is valid:', { title, term, number, meets });
+      // 3. Call the passed-in onSubmit function with the form's state
+      onSubmit({
+        id: course.id,
+        title,
+        meets,
+        term: course.term, // Term and number are not editable in this form
+        number: course.number,
+      });
     }
   };
 
