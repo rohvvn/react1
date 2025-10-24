@@ -1,7 +1,15 @@
 import { onValue, ref } from 'firebase/database';
 import { useCallback, useEffect, useState } from 'react';
 import { initializeApp } from "firebase/app";
-import { getDatabase, push, update } from 'firebase/database';
+import { 
+  getAuth, 
+  GoogleAuthProvider, 
+  onAuthStateChanged, 
+  signInWithPopup,
+  signOut,
+  type User
+} from 'firebase/auth';
+import { getDatabase, update } from 'firebase/database';
 
 const firebaseConfig = {
   apiKey: "AIzaSyBbe3P6WQAgtLvv205XmrkjZaqRyQ4EQRY",
@@ -17,6 +25,39 @@ const firebaseConfig = {
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
 const database = getDatabase(app);
+
+// Add Firebase Auth
+const auth = getAuth(app);
+
+export const useAuthState = () => {
+  const [user, setUser] = useState<User | null>(null);
+
+  useEffect(() => {
+    return onAuthStateChanged(auth, (user) => {
+      setUser(user);
+    });
+  }, []);
+
+  return [user];
+};
+
+const provider = new GoogleAuthProvider();
+
+export const signInWithGoogle = () => {
+  signInWithPopup(auth, provider)
+    .catch((error) => {
+      console.error(error);
+    });
+};
+
+export const signOutUser = async () => {
+  try {
+    await signOut(auth);
+  } catch (error) {
+    console.error(error);
+  }
+};
+
 
 const useDbData = (path: string) => {
   const [data, setData] = useState<unknown>();
@@ -34,7 +75,7 @@ const useDbData = (path: string) => {
 };
 
 export const useDbUpdate = (path: string) => {
-  return useCallback((value: unknown) => (
+  return useCallback((value: object) => (
     update(ref(database, path), value)
   ), [path]);
 };
