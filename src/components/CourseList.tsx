@@ -1,6 +1,7 @@
 // @ts-ignore - JavaScript utility file
 import { conflictsWithSelected } from '../utilities/timeConflicts';
 import { Link } from '@tanstack/react-router';
+import { useProfile } from '../utilities/firebase';
 
 export interface Course {
     term: string;
@@ -20,6 +21,7 @@ interface CourseListProps {
 
 const CourseList = ({courses, quarterSelection, selectedIds, onToggle}: CourseListProps) => {
     const entries = Object.entries(courses ?? {});
+    const [profile] = useProfile();
     
     // Filter courses by quarter and add conflict detection
     const filteredEntries = entries
@@ -70,9 +72,11 @@ const CourseList = ({courses, quarterSelection, selectedIds, onToggle}: CourseLi
                   <h3 className="card-title">{course.term} CS {course.number}</h3>
                   <p className="card-subtitle">{course.title}</p>
                 </div>
-                <Link to="/edit/$courseId" params={{ courseId: id }} className="edit-btn" aria-label={`Edit ${course.title}`}>
-                  Edit
-                </Link>
+                { profile?.isAdmin && (
+                  <Link to="/edit/$courseId" params={{ courseId: id }} className="edit-btn" aria-label={`Edit ${course.title}`}>
+                    Edit
+                  </Link>
+                )}
               </div>
               <hr className="card-divider" />
               <div className="card-time">{course.meets}</div>

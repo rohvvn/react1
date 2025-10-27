@@ -41,6 +41,15 @@ export const useAuthState = () => {
   return [user];
 };
 
+interface Profile {
+  isAdmin: boolean;
+}
+
+export const useProfile = () => {
+  const [user] = useAuthState();
+  return useDbData<Profile>(user ? `/users/${user.uid}` : undefined);
+};
+
 const provider = new GoogleAuthProvider();
 
 export const signInWithGoogle = () => {
@@ -59,19 +68,27 @@ export const signOutUser = async () => {
 };
 
 
-const useDbData = (path: string) => {
-  const [data, setData] = useState<unknown>();
+const useDbData = <T>(path?: string) => {
+  const [data, setData] = useState<T>();
   const [error, setError] = useState<Error | null>(null);
 
-  useEffect(() => (
-    onValue(ref(database, path), (snapshot) => {
+  useEffect(() => {
+    if (!path) {
+      setData(undefined);
+      return;
+    }
+
+    const dbRef = ref(database, path);
+    const unsubscribe = onValue(dbRef, (snapshot) => {
       setData(snapshot.val());
     }, (error) => {
       setError(error);
-    })
-  ), [path]);
+    });
 
-  return [data, error];
+    return () => unsubscribe();
+  }, [path]);
+
+  return [data, error] as const;
 };
 
 export const useDbUpdate = (path: string) => {
