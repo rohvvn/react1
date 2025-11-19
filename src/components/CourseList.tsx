@@ -46,6 +46,7 @@ const CourseList = ({courses, quarterSelection, selectedIds, onToggle}: CourseLi
       <div className="schedule-grid">
         {filteredEntries.map(({ id, course, isSelected, isUnselectable }) => (
             <article
+              data-cy="course"
               key={id}
               className={`class-card${isSelected ? ' selected' : ''}${isUnselectable ? ' conflicted' : ''}`}
               aria-label={`${course.term} CS ${course.number} ${course.title}`}
